@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Onboarding Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!-- Chart.js Library -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <main>
+        <h1>Onboarding Metrics Dashboard</h1>
+        <!-- ========================================
+             KPI SECTION - The two number cards
+             ======================================== -->
+        <section role="region" aria-labelledby="kpi-heading">
+            <h2 id="kpi-heading" class="sr-only">Key Performance Indicators</h2>
+            
+            <div class="kpi-container">
+                <div class="kpi-card" role="article" aria-label="Total tasks completed this month">
+                    <p class="kpi-number">{{ total_tasks }}</p>
+                    <p class="kpi-label">Tasks Completed</p>
+                </div>
+                
+                <div class="kpi-card" role="article" aria-label="Average onboarding satisfaction score">
+                    <p class="kpi-number">{{ satisfaction }}</p>
+                    <p class="kpi-label">Satisfaction Score</p>
+                </div>
+            </div>
+        </section>
+                <!-- ========================================
+             CHARTS SECTION - The three charts
+             ======================================== -->
+        <section role="region" aria-labelledby="charts-heading">
+            <h2 id="charts-heading" class="sr-only">Data Visualizations</h2>
+            
+            <!-- Two charts side by side (weekly tasks + engagement) -->
+            <div class="charts-row">
+                <div class="chart-container">
+                    <h3>Tasks Completed by Week</h3>
+                    <canvas id="weeklyChart" aria-label="Line chart showing tasks completed each week"></canvas>
+                </div>
+                
+                <div class="chart-container">
+                    <h3>Engagement Over 3 Months</h3>
+                    <canvas id="engagementChart" aria-label="Line chart showing employee engagement over three months"></canvas>
+                </div>
+            </div>
+                        <!-- Category chart - full width below the others -->
+            <div class="chart-container-full">
+                <h3>Tasks by Category</h3>
+                <canvas id="categoryChart" aria-label="Bar chart showing tasks broken down by category"></canvas>
+            </div>
+        </section>
+    </main>
+
+    <!-- ========================================
+         JAVASCRIPT - Renders the charts
+         ======================================== -->
+    <script>
+        // Tasks by Week - Line Chart
+        new Chart(document.getElementById('weeklyChart'), {
+            type: 'line',
+            data: {
+                labels: {{ weekly_tasks.keys() | list | tojson }},
+                datasets: [{
+                    label: 'Tasks Completed',
+                    data: {{ weekly_tasks.values() | list | tojson }},
+                    borderColor: '#3498db',
+                    backgroundColor: 'rgba(52, 152, 219, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // Engagement Over 3 Months - Line Chart
+        new Chart(document.getElementById('engagementChart'), {
+            type: 'line',
+            data: {
+                labels: {{ monthly_engagement.keys() | list | tojson }},
+                datasets: [{
+                    label: 'Engagement %',
+                    data: {{ monthly_engagement.values() | list | tojson }},
+                    borderColor: '#2ecc71',
+                    backgroundColor: 'rgba(46, 204, 113, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100
+                    }
+                }
+            }
+        });
+
+        // Tasks by Category - Bar Chart
+        new Chart(document.getElementById('categoryChart'), {
+            type: 'bar',
+            data: {
+                labels: {{ category_tasks.keys() | list | tojson }},
+                datasets: [{
+                    label: 'Number of Tasks',
+                    data: {{ category_tasks.values() | list | tojson }},
+                    backgroundColor: [
+                        '#3498db',
+                        '#2ecc71',
+                        '#f39c12',
+                        '#e74c3c',
+                        '#9b59b6'
+                    ]
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

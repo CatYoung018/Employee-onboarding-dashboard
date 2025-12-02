@@ -1,0 +1,157 @@
+/* ==========================================
+   ACCESSIBILITY: Screen Reader Only
+   ========================================== */
+/* This class hides content visually but keeps it available to screen readers */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}
+
+/* ==========================================
+   BASE STYLES
+   ========================================== */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f0f2f5;
+}
+
+h1 {
+    color: #2c3e50;
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 40px;
+}
+
+/* ==========================================
+   KPI CONTAINER
+   ========================================== */
+.kpi-container {
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* ==========================================
+   KPI CARDS
+   ========================================== */
+.kpi-card {
+    background-color: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    flex: 1;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* ACCESSIBILITY: Hover AND Focus states for both mouse and keyboard users */
+.kpi-card:hover,
+.kpi-card:focus-within {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    outline: 2px solid #3498db;  /* Visible focus indicator */
+    outline-offset: 2px;
+}
+
+/* ==========================================
+   KPI CONTENT
+   ========================================== */
+.kpi-number {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #3498db;
+    margin: 0 0 10px 0;
+}
+
+/* ACCESSIBILITY: Darker gray for better color contrast (WCAG AA compliant) */
+.kpi-label {
+    font-size: 0.9rem;
+    color: #5a6c7d;  /* Passes WCAG contrast ratio */
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* ==========================================
+   ACCESSIBILITY: Reduced Motion
+   ========================================== */
+/* Respects user's operating system preference for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .kpi-card {
+        transition: none;
+    }
+    .kpi-card:hover,
+    .kpi-card:focus-within {
+        transform: none;  /* No lifting animation */
+    }
+}
+
+/* ==========================================
+   ACCESSIBILITY: Focus Styles
+   ========================================== */
+/* Ensure all interactive elements have visible focus indicators */
+*:focus {
+    outline: 2px solid #3498db;
+    outline-offset: 2px;
+}
+
+/* Remove default focus style only if we're providing a custom one */
+*:focus:not(:focus-visible) {
+    outline: none;
+}
+
+*:focus-visible {
+    outline: 2px solid #3498db;
+    outline-offset: 2px;
+}
+/* ==========================================
+   CHARTS SECTION
+   ========================================== */
+.charts-row {
+    display: flex;
+    gap: 30px;
+    max-width: 1200px;
+    margin: 40px auto;
+}
+
+.chart-container {
+    background-color: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    flex: 1;
+}
+
+.chart-container-full {
+    background-color: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    max-width: 1200px;
+    margin: 0 auto 40px auto;
+}
+
+.chart-container h3,
+.chart-container-full h3 {
+    color: #2c3e50;
+    font-size: 1.2rem;
+    margin: 0 0 20px 0;
+    text-align: center;
+}
+
+/* Reduced motion for charts */
+@media (prefers-reduced-motion: reduce) {
+    canvas {
+        animation: none !important;
+    }
+}
